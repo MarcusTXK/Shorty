@@ -7,7 +7,7 @@ export class UpdateUrlDto {
 }
 
 export const updateUrlSchema = Joi.object({
-  customUrl: Joi.string().uri(),
+  customUrl: Joi.string().min(1).max(10),
   originalUrl: Joi.string().uri(),
-  password: Joi.string(),
+  password: Joi.string().min(5),
 });

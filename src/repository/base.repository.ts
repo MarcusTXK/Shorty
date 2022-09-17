@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Client, mapping, auth } from 'cassandra-driver';
-import async from 'async';
+import { Client, mapping } from 'cassandra-driver';
 
 @Injectable()
 export class BaseRepository {
@@ -11,7 +10,6 @@ export class BaseRepository {
       contactPoints: ['localhost:9042'],
       keyspace: 'urlshortener',
       localDataCenter: 'datacenter1',
-      // authProvider: new auth.PlainTextAuthProvider('cassandra', 'cassandra'),
     });
     this.client = client;
   }

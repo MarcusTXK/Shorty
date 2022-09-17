@@ -1,12 +1,21 @@
-import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  HttpException,
+  HttpStatus,
+  HttpCode,
+  Delete,
+} from '@nestjs/common';
 import { CreateUrlDto, createUrlSchema } from 'src/dto/create-url.dto';
+import { LoginUrlDto, loginUrlSchema } from 'src/dto/login-url.dto';
 import { UpdateUrlDto, updateUrlSchema } from 'src/dto/update-url.dto';
 import { Url } from 'src/models/url.model';
 import { UrlService } from '../service/url.service';
 
-// TODO hash password for update and delete
-// TODO do not return password
-// TODO only return originalUrl if no password
 @Controller()
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}
@@ -14,12 +23,22 @@ export class UrlController {
   // For testing purposes only
   @Get('url')
   async getUrls() {
-    return await this.urlService.geUrls();
+    try {
+      return await this.urlService.geUrls();
+    } catch (e: any) {
+      console.error(e);
+      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get('url/:shortUrl')
   async getUrlById(@Param('shortUrl') shortUrl: string) {
-    return await this.urlService.getUrlByShortUrl(shortUrl);
+    try {
+      return await this.urlService.getUrlByShortUrl(shortUrl);
+    } catch (e: any) {
+      console.error(e);
+      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Post('url')
@@ -27,7 +46,7 @@ export class UrlController {
     try {
       const { error, value } = createUrlSchema.validate(urlDto);
       if (error) {
-        throw error;
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
       const url: Url = {
         shortUrl: value.customUrl ? value.customUrl : value.originalUrl,
@@ -37,7 +56,32 @@ export class UrlController {
       };
       return await this.urlService.createUrl(url);
     } catch (e: any) {
-      return e.message;
+      console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Post('url/:shortUrl')
+  @HttpCode(HttpStatus.OK)
+  async loginByShortUrl(
+    @Param('shortUrl') shortUrl: string,
+    @Body() urlDto: LoginUrlDto,
+  ) {
+    try {
+      const { error, value } = loginUrlSchema.validate(urlDto);
+      if (error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
+      return await this.urlService.loginByShortUrl(shortUrl, value.password);
+    } catch (e: any) {
+      console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -49,21 +93,25 @@ export class UrlController {
     try {
       const { error, value } = updateUrlSchema.validate(urlDto);
       if (error) {
-        throw error;
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
-      if (value.customUrl) {
-        // Since unable to update PK, have to delete and create new
-        if (await this.urlService.getUrlByShortUrl(value.customUrl)) {
-          throw new Error('Short url already taken');
-        }
-        const toDelete = await this.urlService.getUrlByShortUrl(shortUrl);
-        this.urlService.deleteByShortUrl(shortUrl);
-        this.urlService.createUrl({ ...toDelete, ...value });
-      } else {
-        return await this.urlService.updateUrl(shortUrl, value);
-      }
+      return await this.urlService.updateUrl(shortUrl, value);
     } catch (e: any) {
-      return e.message;
+      console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Delete('url/:shortUrl')
+  async deleteUrlById(@Param('shortUrl') shortUrl: string) {
+    try {
+      return await this.urlService.deleteByShortUrl(shortUrl);
+    } catch (e: any) {
+      console.error(e);
+      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
