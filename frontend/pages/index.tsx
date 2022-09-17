@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-page-custom-font */
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -21,33 +20,38 @@ import {
   Spacer,
   Center,
 } from "@chakra-ui/react";
-import OCard from "../components/organisms/OShortenUrlCard";
 import MWelcomeContainer from "../components/organisms/OWelcomeContainer";
+import OShortenSuccessDialog from "../components/organisms/OShortenSuccessDialog";
+import { useState } from "react";
+import OShortenUrlCard from "../components/organisms/OShortenUrlCard";
 
 const Home: NextPage = () => {
+  const [shortUrl, setShortUrl] = useState("");
   return (
     <>
       <Head>
-        <title>Shorty</title>
+        <title>Shorty | Shorten URLs</title>
         <meta
           name="description"
           content="Secure URL shortener with passwords"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <Navbar />
-        <Flex>
-          <Spacer />
-          <Center>
-            <OCard />
-          </Center>
-          <Hide below="md">
-            <MWelcomeContainer />
-          </Hide>
-          <Spacer />
-        </Flex>
-      </main>
+      <Navbar />
+      <Flex>
+        <Spacer />
+        <Center>
+          <OShortenUrlCard handleShortURl={setShortUrl} />
+        </Center>
+        <Hide below="md">
+          <MWelcomeContainer />
+        </Hide>
+        <Spacer />
+      </Flex>
+      <OShortenSuccessDialog
+        shortUrl={shortUrl}
+        handleClose={() => setShortUrl("")}
+      />
       <footer>
         <OFooter />
       </footer>

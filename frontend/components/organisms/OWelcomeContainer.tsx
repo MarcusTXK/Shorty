@@ -13,12 +13,12 @@ import {
 import AArrow from "../atoms/AArrow";
 import MList from "../molecules/MList";
 
-const MWelcomeContainer = () => {
+const OWelcomeContainer = () => {
   const perks = [
-    { id: 1, desc: "Easy Link Shortening" },
-    { id: 2, desc: "Full Link history" },
-    { id: 3, desc: "Customized Shorty Urls" },
-    { id: 4, desc: "Password secured Urls" },
+    "Easy Link Shortening",
+    "Full Link history",
+    "Customized Shorty URLs",
+    "Password secured URLs",
   ];
   return (
     <>
@@ -54,7 +54,6 @@ const MWelcomeContainer = () => {
             <Button
               colorScheme={"purple"}
               bg={"purple.400"}
-              rounded={"full"}
               px={6}
               _hover={{
                 bg: "purple.500",
@@ -92,4 +91,4 @@ const MWelcomeContainer = () => {
   );
 };
 
-export default MWelcomeContainer;
+export default OWelcomeContainer;
