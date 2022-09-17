@@ -7,6 +7,7 @@ import { Url } from '../models/url.model';
 import { UpdateUrlDto } from 'src/dto/update-url.dto';
 import { SALT_ROUNDS } from '../const/constants';
 import { GetUrlDto } from 'src/dto/get-url.dto';
+import { CreateUrlDto } from 'src/dto/create-url.dto';
 
 @Injectable()
 export class UrlService {
@@ -46,28 +47,41 @@ export class UrlService {
     };
   }
 
-  async createUrl(url: Url) {
-    if (url.shortUrl != url.originalUrl) {
-      return this.urlRepository.createUrl(url);
-    } else {
-      let counter = 0;
-      let hash;
-      let existingUrl;
-      do {
-        counter++;
-        hash = md5(url.originalUrl + new Date().getTime() + counter).slice(
-          0,
-          7,
-        );
-        existingUrl = await this.urlRepository.getUrlByShortUrl(hash);
-      } while (existingUrl.length !== 0);
-      url.shortUrl = hash;
-      if (url.password) {
-        url.password = await bcrypt.hash(url.password, SALT_ROUNDS);
+  async createUrl(url: CreateUrlDto) {
+    const toCreate: Url = {
+      shortUrl: url.customUrl ? url.customUrl : url.originalUrl,
+      originalUrl: url.originalUrl,
+      password: url.password,
+    };
+
+    if (url.customUrl) {
+      if (
+        (await this.urlRepository.getUrlByShortUrl(url.customUrl)).length !== 0
+      ) {
+        throw new Error('Short url already taken');
       }
-      await this.urlRepository.createUrl(url);
-      return { shortUrl: hash };
+      await this.urlRepository.createUrl(toCreate);
+      return { shortUrl: url.customUrl };
     }
+
+    // Generate unqiue hash for short url
+    let counter = 0;
+    let hash;
+    let existingUrl;
+    do {
+      counter++;
+      hash = md5(toCreate.originalUrl + new Date().getTime() + counter).slice(
+        0,
+        7,
+      );
+      existingUrl = await this.urlRepository.getUrlByShortUrl(hash);
+    } while (existingUrl.length !== 0);
+    toCreate.shortUrl = hash;
+    if (toCreate.password) {
+      toCreate.password = await bcrypt.hash(toCreate.password, SALT_ROUNDS);
+    }
+    await this.urlRepository.createUrl(toCreate);
+    return { shortUrl: hash };
   }
 
   async updateUrl(shortUrl: string, url: UpdateUrlDto) {

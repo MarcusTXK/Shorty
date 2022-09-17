@@ -48,13 +48,7 @@ export class UrlController {
       if (error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
-      const url: Url = {
-        shortUrl: value.customUrl ? value.customUrl : value.originalUrl,
-        originalUrl: value.originalUrl,
-        email: value.email,
-        password: value.password,
-      };
-      return await this.urlService.createUrl(url);
+      return await this.urlService.createUrl(value);
     } catch (e: any) {
       console.error(e);
       if (e instanceof HttpException) {
