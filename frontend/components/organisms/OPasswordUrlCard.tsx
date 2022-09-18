@@ -19,6 +19,7 @@ interface OPasswordUrlCardProps {
 const OPasswordUrlCard = ({ shortUrl }: OPasswordUrlCardProps): JSX.Element => {
   const [password, setPassword] = useState("");
   const toast = useToast();
+  const toastId = "invalid-password";
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const res = await axios
@@ -33,12 +34,13 @@ const OPasswordUrlCard = ({ shortUrl }: OPasswordUrlCardProps): JSX.Element => {
       res.data.originalUrl
     ) {
       window.location.assign(res.data.originalUrl);
-    } else {
+    } else if (!toast.isActive(toastId)) {
       toast({
+        id: toastId,
         title: "Invalid Password.",
         description: "Please try again.",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }

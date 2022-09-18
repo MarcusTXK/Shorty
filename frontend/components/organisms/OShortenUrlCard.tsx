@@ -46,7 +46,7 @@ const OShortenUrlCard = ({
         title: "Something went wrong.",
         description: "Please try again later.",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     });
