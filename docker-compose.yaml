@@ -18,8 +18,8 @@ services:
     depends_on:
       - cassandra
     volumes:
-      - ./backend/urlshortener.cql:/urlshortener.cql
-    command: /bin/bash -c "sleep 60 && echo loading cassandra keyspace && cqlsh cassandra -f /urlshortener.cql"
+      - ./backend/urlShortener.cql:/urlShortener.cql
+    command: /bin/bash -c "sleep 60 && echo loading cassandra keyspace && cqlsh cassandra -f /urlShortener.cql"
     deploy:
       restart_policy:
         condition: on-failure
