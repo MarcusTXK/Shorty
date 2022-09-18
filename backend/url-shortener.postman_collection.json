@@ -1,169 +1,203 @@
 {
-	"info": {
-		"_postman_id": "d8cf864c-ebb5-4913-842f-bba57ac78840",
-		"name": "Url Shortener",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9463548"
-	},
-	"item": [
-		{
-			"name": "Get All Urls",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{hostname}}/url",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getUrlById",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{hostname}}/url/709b95a",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url",
-						"709b95a"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "createUrl w/ password",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{hostname}}/url",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "createUrl w/o password",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"originalUrl\": \"https://www.withoutpassword.com\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{hostname}}/url",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "loginByShortUrl",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"password\": \"abc123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{hostname}}/url/709b95a",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url",
-						"709b95a"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updateUrlById",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"customUrl\": \"test\",\r\n\t\"originalUrl\": \"abc.com\",\r\n\t\"password\": \"abc\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{hostname}}/url/709b95a",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url",
-						"709b95a"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "deleteUrlById",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{hostname}}/url/709b95a",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"url",
-						"709b95a"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "4a22bebb-5bf1-4493-abe0-58e9e550e814",
+    "name": "Url Shortener",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9463548"
+  },
+  "item": [
+    {
+      "name": "Get All Urls",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{hostname}}/url",
+          "host": ["{{hostname}}"],
+          "path": ["url"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getUrlById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{hostname}}/url/709b95a",
+          "host": ["{{hostname}}"],
+          "path": ["url", "709b95a"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createUrl w/o password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"originalUrl\": \"https://www.withoutpassword.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url",
+          "host": ["{{hostname}}"],
+          "path": ["url"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createUrl w/ password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url",
+          "host": ["{{hostname}}"],
+          "path": ["url"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createUrl w/ customUrl and password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"customUrl\": \"abc\",\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url",
+          "host": ["{{hostname}}"],
+          "path": ["url"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createUrl w/ INVALID URL",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"originalUrl\": \"NotAURL\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url",
+          "host": ["{{hostname}}"],
+          "path": ["url"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createUrl w/ INVALID Password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url",
+          "host": ["{{hostname}}"],
+          "path": ["url"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "loginByShortUrl",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"password\": \"abc123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url/709b95a",
+          "host": ["{{hostname}}"],
+          "path": ["url", "709b95a"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateUrlById",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"customUrl\": \"test\",\r\n\t\"originalUrl\": \"abc.com\",\r\n\t\"password\": \"abc\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{hostname}}/url/709b95a",
+          "host": ["{{hostname}}"],
+          "path": ["url", "709b95a"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deleteUrlById",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{hostname}}/url/709b95a",
+          "host": ["{{hostname}}"],
+          "path": ["url", "709b95a"]
+        }
+      },
+      "response": []
+    }
+  ]
 }
