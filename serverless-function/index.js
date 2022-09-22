@@ -22,6 +22,7 @@ exports.getNews = (req, res) => {
   if (req.params["0"]) {
     query.category = req.params["0"];
   }
+  res.set("Access-Control-Allow-Origin", "*");
   newsapi.v2.topHeadlines(query).then((response) => {
     /*
        {
