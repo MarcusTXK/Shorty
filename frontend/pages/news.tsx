@@ -1,28 +1,33 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import Navbar from "../components/organisms/ONavbar";
-import OFooter from "../components/organisms/OFooter";
 import {
   Button,
-  Container,
-  Grid,
   GridItem,
   Select,
   HStack,
-  Box,
   Flex,
   SimpleGrid,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { MOCK_RESPONSE, NEWS_CATEGORIES, URL_NEWS_SERVICE } from "../constants";
+import { Key, useEffect, useState } from "react";
+import { NEWS_CATEGORIES, URL_NEWS_SERVICE } from "../constants";
 import ONewsWithImage from "../components/organisms/ONewsWithImage";
 import axios from "axios";
 
+interface News {
+  source: { name: string | null };
+  author: string | null;
+  title: string | null;
+  description: string | null;
+  url: string;
+  urlToImage: string | null;
+  publishedAt: string | null;
+  content: string | null;
+}
+
 const Home: NextPage = () => {
-  const [news, setNews] = useState([]);
+  const [news, setNews] = useState<News[]>([]);
   const [category, setCategory] = useState("");
   const toast = useToast();
 
@@ -55,7 +60,7 @@ const Home: NextPage = () => {
   };
 
   const renderNews = () => {
-    return news.map((e, i) => {
+    return news.map((e: News, i: Key) => {
       return (
         <GridItem key={i} w="100%">
           <ONewsWithImage
