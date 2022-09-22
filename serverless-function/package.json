@@ -1,0 +1,7 @@
+{
+  "name": "serverless-fn",
+  "version": "0.0.1",
+  "dependencies": {
+    "newsapi": "^2.4.1"
+  }
+}
