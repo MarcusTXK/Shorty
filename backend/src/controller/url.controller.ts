@@ -23,7 +23,7 @@ export class UrlController {
   @Get('url')
   async getUrls() {
     try {
-      return await this.urlService.geUrls();
+      return await this.urlService.getAllUrls();
     } catch (e: any) {
       console.error(e);
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);

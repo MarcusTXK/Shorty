@@ -13,7 +13,7 @@ import { CreateUrlDto } from '../dto/create-url.dto';
 export class UrlService {
   constructor(private urlRepository: UrlRepository) {}
 
-  async geUrls() {
+  async getAllUrls() {
     return this.urlRepository.getUrls();
   }
 

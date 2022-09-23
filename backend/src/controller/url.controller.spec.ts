@@ -41,7 +41,7 @@ describe('UrlController', () => {
         },
       ];
       jest
-        .spyOn(urlService, 'geUrls')
+        .spyOn(urlService, 'getAllUrls')
         .mockImplementation(() => Promise.resolve(mockUrls));
       expect(await urlController.getUrls()).toBe(mockUrls);
     });
