@@ -10,10 +10,9 @@ import {
   HttpCode,
   Delete,
 } from '@nestjs/common';
-import { CreateUrlDto, createUrlSchema } from 'src/dto/create-url.dto';
-import { LoginUrlDto, loginUrlSchema } from 'src/dto/login-url.dto';
-import { UpdateUrlDto, updateUrlSchema } from 'src/dto/update-url.dto';
-import { Url } from 'src/models/url.model';
+import { CreateUrlDto, createUrlSchema } from '../dto/create-url.dto';
+import { LoginUrlDto, loginUrlSchema } from '../dto/login-url.dto';
+import { UpdateUrlDto, updateUrlSchema } from '../dto/update-url.dto';
 import { UrlService } from '../service/url.service';
 
 @Controller()
@@ -27,7 +26,7 @@ export class UrlController {
       return await this.urlService.geUrls();
     } catch (e: any) {
       console.error(e);
-      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -37,7 +36,7 @@ export class UrlController {
       return await this.urlService.getUrlByShortUrl(shortUrl);
     } catch (e: any) {
       console.error(e);
-      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -89,13 +88,13 @@ export class UrlController {
       if (error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
-      return await this.urlService.updateUrl(shortUrl, value);
+      return await this.urlService.updateUrlByShortUrl(shortUrl, value);
     } catch (e: any) {
       console.error(e);
       if (e instanceof HttpException) {
         throw e;
       }
-      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -105,7 +104,7 @@ export class UrlController {
       return await this.urlService.deleteByShortUrl(shortUrl);
     } catch (e: any) {
       console.error(e);
-      return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

@@ -4,10 +4,10 @@ import * as bcrypt from 'bcrypt';
 
 import { UrlRepository } from '../repository/url.repository';
 import { Url } from '../models/url.model';
-import { UpdateUrlDto } from 'src/dto/update-url.dto';
+import { UpdateUrlDto } from '../dto/update-url.dto';
 import { SALT_ROUNDS } from '../const/constants';
-import { GetUrlDto } from 'src/dto/get-url.dto';
-import { CreateUrlDto } from 'src/dto/create-url.dto';
+import { GetUrlDto } from '../dto/get-url.dto';
+import { CreateUrlDto } from '../dto/create-url.dto';
 
 @Injectable()
 export class UrlService {
@@ -84,7 +84,7 @@ export class UrlService {
     return { shortUrl: hash };
   }
 
-  async updateUrl(shortUrl: string, url: UpdateUrlDto) {
+  async updateUrlByShortUrl(shortUrl: string, url: UpdateUrlDto) {
     if (url.customUrl) {
       // Since unable to update PK, have to delete and create new
       if (
