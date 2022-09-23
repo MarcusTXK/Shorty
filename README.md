@@ -1,4 +1,4 @@
-## Shorty
+# Shorty [![Build Status](https://app.travis-ci.com/MarcusTXK/url-shortener.svg?branch=main)](https://app.travis-ci.com/MarcusTXK/url-shortener)
 
 Shorty is url shortener that aims to create unique shortened urls from longer urls. A random shortened url will be created if no ‘customUrl’ is specified (minimum length of 1, maximum of length 10). All shortened urls/custom urls have to be unique. When the user visits the shortened url, the goal is to provide them with the original url so that they can visit the original url with just the shortened url.
 
