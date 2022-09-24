@@ -1,6 +1,7 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import { AppModule } from './../src/app.module';
 import { UrlController } from '../src/controller/url.controller';
 import { BaseRepository } from '../src/repository/base.repository';
 import { UrlRepository } from '../src/repository/url.repository';
@@ -8,7 +9,7 @@ import { UrlService } from '../src/service/url.service';
 
 describe('UrlController (e2e)', () => {
   let app: INestApplication;
-  const urlRepository = {
+  const urlService = {
     getAllUrls: () => [
       {
         shortUrl: '9020e2e',
@@ -30,8 +31,8 @@ describe('UrlController (e2e)', () => {
       controllers: [UrlController],
       providers: [BaseRepository, UrlRepository, UrlService],
     })
-      .overrideProvider(UrlRepository)
-      .useValue(urlRepository)
+      .overrideProvider(UrlService)
+      .useValue(urlService)
       .compile();
 
     app = moduleRef.createNestApplication();
@@ -42,7 +43,7 @@ describe('UrlController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/url')
       .expect(200)
-      .expect(urlRepository.getAllUrls());
+      .expect(urlService.getAllUrls());
   });
 
   afterAll(async () => {
