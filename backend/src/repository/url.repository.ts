@@ -26,7 +26,7 @@ export class UrlRepository implements OnModuleInit {
       .forModel('Url');
   }
 
-  async getUrls() {
+  async getAllUrls() {
     return (await this.urlMapper.findAll()).toArray();
   }
 
