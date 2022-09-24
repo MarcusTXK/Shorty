@@ -14,7 +14,7 @@ export class UrlService {
   constructor(private urlRepository: UrlRepository) {}
 
   async getAllUrls() {
-    return this.urlRepository.getUrls();
+    return this.urlRepository.getAllUrls();
   }
 
   async getUrlByShortUrl(shortUrl: string): Promise<GetUrlDto> {
