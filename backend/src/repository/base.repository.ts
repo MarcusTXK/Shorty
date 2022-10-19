@@ -7,7 +7,7 @@ export class BaseRepository {
   mapper: mapping.Mapper;
   private createClient() {
     const client = new Client({
-      contactPoints: ['cassandra:9042'],
+      contactPoints: [process.env.DATABASE_URL || 'localhost:9042'],
       keyspace: 'urlshortener',
       localDataCenter: 'datacenter1',
     });
