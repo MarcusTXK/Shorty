@@ -36,6 +36,21 @@ services:
       - "8080:8080"
     environment:
       - DATABASE_URL=cassandra:9042
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - cassandra
       - cassandra-load-keyspace
+      - redis
+
+  redis:
+    container_name: cache
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
+    driver: local

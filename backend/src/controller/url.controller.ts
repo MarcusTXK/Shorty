@@ -9,15 +9,24 @@ import {
   HttpStatus,
   HttpCode,
   Delete,
+  UseInterceptors,
+  CacheInterceptor,
+  CACHE_MANAGER,
+  Inject,
 } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { CreateUrlDto, createUrlSchema } from '../dto/create-url.dto';
 import { LoginUrlDto, loginUrlSchema } from '../dto/login-url.dto';
 import { UpdateUrlDto, updateUrlSchema } from '../dto/update-url.dto';
 import { UrlService } from '../service/url.service';
 
 @Controller()
+@UseInterceptors(CacheInterceptor)
 export class UrlController {
-  constructor(private readonly urlService: UrlService) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly urlService: UrlService,
+  ) {}
 
   // For testing purposes only
   @Get('url')
