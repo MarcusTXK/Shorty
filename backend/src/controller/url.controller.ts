@@ -78,7 +78,7 @@ export class UrlController {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
       console.log('is user present', req.user);
-      if (req.user.email) {
+      if (req.user && req.user.email) {
         value.email = req.user.email;
         console.log(value);
       }

@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { CacheModule, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UrlController } from '../src/controller/url.controller';
 import { BaseRepository } from '../src/repository/base.repository';
@@ -27,6 +27,7 @@ describe('UrlController (e2e)', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [CacheModule.register()],
       controllers: [UrlController],
       providers: [BaseRepository, UrlRepository, UrlService],
     })

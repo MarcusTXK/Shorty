@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException } from '@nestjs/common';
+import { CacheModule, HttpException } from '@nestjs/common';
 
 import { UrlController } from './url.controller';
 import { UrlService } from '../service/url.service';
@@ -9,6 +9,7 @@ import { BaseRepository } from '../repository/base.repository';
 import { GetUrlDto } from '../dto/url/get-url.dto';
 import { CreateUrlDto } from '../dto/url/create-url.dto';
 import { UpdateUrlDto } from 'src/dto/url/update-url.dto';
+import { AuthRequest } from 'src/util/auth';
 
 describe('UrlController', () => {
   let urlController: UrlController;
@@ -16,6 +17,7 @@ describe('UrlController', () => {
 
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
+      imports: [CacheModule.register()],
       controllers: [UrlController],
       providers: [BaseRepository, UrlRepository, UrlService],
     }).compile();
@@ -60,7 +62,9 @@ describe('UrlController', () => {
         }
         return null;
       });
-      expect(await urlController.getUrlById('wrong')).toBe(null);
+      expect(
+        async () => await urlController.getUrlById('wrong'),
+      ).rejects.toThrow(HttpException);
       expect(await urlController.getUrlById(shortUrl)).toBe(mockUrl);
     });
   });
@@ -73,15 +77,23 @@ describe('UrlController', () => {
       const invalidUrl: CreateUrlDto = {
         originalUrl: 'invalidUrl',
       };
+      const mockRequest = {
+        user: {
+          email: 'free@email.com',
+          role: 'FREE',
+        },
+      } as AuthRequest;
       const shortUrl = { shortUrl: '123' };
       jest
         .spyOn(urlService, 'createUrl')
         .mockImplementation(() => Promise.resolve(shortUrl));
       // valid url
-      expect(await urlController.createUrl(validUrl)).toBe(shortUrl);
+      expect(await urlController.createUrl(validUrl, mockRequest)).toBe(
+        shortUrl,
+      );
       // invalid url (caught via validations)
       expect(
-        async () => await urlController.createUrl(invalidUrl),
+        async () => await urlController.createUrl(invalidUrl, mockRequest),
       ).rejects.toThrow(HttpException);
     });
   });
