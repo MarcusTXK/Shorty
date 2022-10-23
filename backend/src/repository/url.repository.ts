@@ -30,6 +30,10 @@ export class UrlRepository implements OnModuleInit {
     return (await this.urlMapper.findAll()).toArray();
   }
 
+  async getUrlsByEmail(email: string) {
+    return (await this.urlMapper.find({ email: email })).toArray();
+  }
+
   async getUrlByShortUrl(shortUrl: string) {
     return (await this.urlMapper.find({ shortUrl: shortUrl })).toArray();
   }

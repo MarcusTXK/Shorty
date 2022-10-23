@@ -11,24 +11,18 @@ import {
   Delete,
   UseInterceptors,
   CacheInterceptor,
-  CACHE_MANAGER,
-  Inject,
 } from '@nestjs/common';
-import { Cache } from 'cache-manager';
-import { CreateUrlDto, createUrlSchema } from '../dto/create-url.dto';
-import { LoginUrlDto, loginUrlSchema } from '../dto/login-url.dto';
-import { UpdateUrlDto, updateUrlSchema } from '../dto/update-url.dto';
+import { CreateUrlDto, createUrlSchema } from '../dto/url/create-url.dto';
+import { LoginUrlDto, loginUrlSchema } from '../dto/url/login-url.dto';
+import { UpdateUrlDto, updateUrlSchema } from '../dto/url/update-url.dto';
 import { UrlService } from '../service/url.service';
 
 @Controller()
-@UseInterceptors(CacheInterceptor)
 export class UrlController {
-  constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private readonly urlService: UrlService,
-  ) {}
+  constructor(private readonly urlService: UrlService) {}
 
   // For testing purposes only
+  @UseInterceptors(CacheInterceptor)
   @Get('url')
   async getUrls() {
     try {
@@ -39,10 +33,23 @@ export class UrlController {
     }
   }
 
+  @UseInterceptors(CacheInterceptor)
   @Get('url/:shortUrl')
   async getUrlById(@Param('shortUrl') shortUrl: string) {
     try {
       return await this.urlService.getUrlByShortUrl(shortUrl);
+    } catch (e: any) {
+      console.error(e);
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  // TODO valdiation, email should be from jwt
+  @Get('url/email/:email')
+  async getUrlsByEmail(@Param('email') email: string) {
+    try {
+      // TODO validate
+      return await this.urlService.getUrlsByEmail(email);
     } catch (e: any) {
       console.error(e);
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);

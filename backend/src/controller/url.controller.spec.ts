@@ -6,9 +6,9 @@ import { UrlService } from '../service/url.service';
 import { Url } from '../models/url.model';
 import { UrlRepository } from '../repository/url.repository';
 import { BaseRepository } from '../repository/base.repository';
-import { GetUrlDto } from '../dto/get-url.dto';
-import { CreateUrlDto } from '../dto/create-url.dto';
-import { UpdateUrlDto } from 'src/dto/update-url.dto';
+import { GetUrlDto } from '../dto/url/get-url.dto';
+import { CreateUrlDto } from '../dto/url/create-url.dto';
+import { UpdateUrlDto } from 'src/dto/url/update-url.dto';
 
 describe('UrlController', () => {
   let urlController: UrlController;

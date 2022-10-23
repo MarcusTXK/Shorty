@@ -4,10 +4,10 @@ import * as bcrypt from 'bcrypt';
 
 import { UrlRepository } from '../repository/url.repository';
 import { Url } from '../models/url.model';
-import { UpdateUrlDto } from '../dto/update-url.dto';
+import { UpdateUrlDto } from '../dto/url/update-url.dto';
 import { SALT_ROUNDS } from '../const/constants';
-import { GetUrlDto } from '../dto/get-url.dto';
-import { CreateUrlDto } from '../dto/create-url.dto';
+import { GetUrlDto } from '../dto/url/get-url.dto';
+import { CreateUrlDto } from '../dto/url/create-url.dto';
 
 @Injectable()
 export class UrlService {
@@ -28,6 +28,19 @@ export class UrlService {
       urlDto.originalUrl = url[0].originalUrl;
     }
     return urlDto;
+  }
+
+  async getUrlsByEmail(email: string): Promise<GetUrlDto[]> {
+    const urls = await this.urlRepository.getUrlsByEmail(email);
+
+    return urls.map((url) => {
+      const urlDto = new GetUrlDto();
+      urlDto.hasPassword = url.password !== null;
+      if (!urlDto.hasPassword) {
+        urlDto.originalUrl = url.originalUrl;
+      }
+      return urlDto;
+    });
   }
 
   async loginByShortUrl(

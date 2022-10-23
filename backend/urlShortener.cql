@@ -16,5 +16,6 @@ CREATE TABLE url (
 
 CREATE TABLE user (
     email text PRIMARY KEY,
+    password text,
     role text,
 );
