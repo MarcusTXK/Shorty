@@ -4,6 +4,7 @@ export class CreateUrlDto {
   customUrl?: string;
   originalUrl: string;
   password?: string;
+  email?: string;
 }
 
 export const createUrlSchema = Joi.object({

@@ -39,7 +39,7 @@ export class UserRepository implements OnModuleInit {
   }
 
   async updateUser(user: User) {
-    const updatedFields = [];
+    const updatedFields = ['email'];
     updatableFields.forEach((e) => {
       if (user[e]) {
         updatedFields.push(e);

@@ -7,6 +7,7 @@ import { UpdateUserDto } from '../dto/user/update-user.dto';
 import { SALT_ROUNDS } from '../const/constants';
 import { GetUserDto } from '../dto/user/get-user.dto';
 import { CreateUserDto } from '../dto/user/create-user.dto';
+import { generateAccessToken } from 'src/util/auth';
 
 @Injectable()
 export class UserService {
@@ -27,11 +28,15 @@ export class UserService {
 
   async login(email: string, password: string) {
     const user = await this.userRepository.getUserByEmail(email);
-
-    if (user.length === 0) {
-      return false;
+    // User does not exist or wrong password
+    if (
+      user.length === 0 ||
+      !(await bcrypt.compare(password, user[0].password))
+    ) {
+      return null;
     }
-    return await bcrypt.compare(password, user[0].password);
+
+    return generateAccessToken(user[0]);
   }
 
   async createUser(user: CreateUserDto) {
@@ -42,7 +47,7 @@ export class UserService {
     if (!user.role) {
       user.role = Role.Free;
     }
-    return this.userRepository.createUser(user);
+    return await this.userRepository.createUser(user);
   }
 
   async updateUser(email: string, user: UpdateUserDto) {

@@ -66,7 +66,9 @@ export class UrlService {
       originalUrl: url.originalUrl,
       password: url.password,
     };
-
+    if (url.email) {
+      toCreate.email = url.email;
+    }
     if (url.customUrl) {
       if (
         (await this.urlRepository.getUrlByShortUrl(url.customUrl)).length !== 0
@@ -110,9 +112,6 @@ export class UrlService {
         throw new Error('Short url not found');
       }
       this.urlRepository.deleteByShortUrl(shortUrl);
-      console.log('combined', { ...toDelete[0], ...url });
-      console.log('todleete', toDelete[0]);
-      console.log('url', url);
       toDelete[0].shortUrl = url.customUrl;
       this.urlRepository.createUrl({ ...toDelete[0], ...url });
     } else {

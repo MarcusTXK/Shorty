@@ -11,7 +11,9 @@ import {
   Delete,
   UseInterceptors,
   CacheInterceptor,
+  Req,
 } from '@nestjs/common';
+import { AuthRequest } from 'src/util/auth';
 import { CreateUrlDto, createUrlSchema } from '../dto/url/create-url.dto';
 import { LoginUrlDto, loginUrlSchema } from '../dto/url/login-url.dto';
 import { UpdateUrlDto, updateUrlSchema } from '../dto/url/update-url.dto';
@@ -37,31 +39,48 @@ export class UrlController {
   @Get('url/:shortUrl')
   async getUrlById(@Param('shortUrl') shortUrl: string) {
     try {
-      return await this.urlService.getUrlByShortUrl(shortUrl);
+      const url = await this.urlService.getUrlByShortUrl(shortUrl);
+      if (!url) {
+        throw new HttpException('Invalid url', HttpStatus.NOT_FOUND);
+      }
+      return url;
     } catch (e: any) {
       console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   // TODO valdiation, email should be from jwt
   @Get('url/email/:email')
-  async getUrlsByEmail(@Param('email') email: string) {
+  async getUrlsByEmail(@Param('email') email: string, @Req() req: AuthRequest) {
     try {
-      // TODO validate
+      if (req.user.email !== email) {
+        throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      }
       return await this.urlService.getUrlsByEmail(email);
     } catch (e: any) {
       console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   @Post('url')
-  async createUrl(@Body() urlDto: CreateUrlDto) {
+  async createUrl(@Body() urlDto: CreateUrlDto, @Req() req: AuthRequest) {
     try {
       const { error, value } = createUrlSchema.validate(urlDto);
       if (error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
+      console.log('is user present', req.user);
+      if (req.user.email) {
+        value.email = req.user.email;
+        console.log(value);
       }
       return await this.urlService.createUrl(value);
     } catch (e: any) {

@@ -31,7 +31,10 @@ export class UrlRepository implements OnModuleInit {
   }
 
   async getUrlsByEmail(email: string) {
-    return (await this.urlMapper.find({ email: email })).toArray();
+    // TODO duplicate tables with email as PK instead since Cassandra does not support no PK Where filters, this is a temporary fix that does not scale well
+    return (await this.urlMapper.findAll())
+      .toArray()
+      .filter((url) => url.email === email);
   }
 
   async getUrlByShortUrl(shortUrl: string) {
@@ -43,7 +46,7 @@ export class UrlRepository implements OnModuleInit {
   }
 
   async updateByShortUrl(url: Url) {
-    const updatedFields = [];
+    const updatedFields = ['shortUrl'];
     updatableFields.forEach((e) => {
       if (url[e]) {
         updatedFields.push(e);

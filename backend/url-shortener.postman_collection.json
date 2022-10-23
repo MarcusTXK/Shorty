@@ -1,203 +1,532 @@
 {
-  "info": {
-    "_postman_id": "4a22bebb-5bf1-4493-abe0-58e9e550e814",
-    "name": "Url Shortener",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "9463548"
-  },
-  "item": [
-    {
-      "name": "Get All Urls",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{hostname}}/url",
-          "host": ["{{hostname}}"],
-          "path": ["url"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "getUrlById",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{hostname}}/url/709b95a",
-          "host": ["{{hostname}}"],
-          "path": ["url", "709b95a"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "createUrl w/o password",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\t\"originalUrl\": \"https://www.withoutpassword.com\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url",
-          "host": ["{{hostname}}"],
-          "path": ["url"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "createUrl w/ password",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url",
-          "host": ["{{hostname}}"],
-          "path": ["url"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "createUrl w/ customUrl and password",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"customUrl\": \"abc\",\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url",
-          "host": ["{{hostname}}"],
-          "path": ["url"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "createUrl w/ INVALID URL",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\t\"originalUrl\": \"NotAURL\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url",
-          "host": ["{{hostname}}"],
-          "path": ["url"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "createUrl w/ INVALID Password",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url",
-          "host": ["{{hostname}}"],
-          "path": ["url"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "loginByShortUrl",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\t\"password\": \"abc123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url/709b95a",
-          "host": ["{{hostname}}"],
-          "path": ["url", "709b95a"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "updateUrlById",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"customUrl\": \"test\",\r\n\t\"originalUrl\": \"abc.com\",\r\n\t\"password\": \"abc\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{hostname}}/url/709b95a",
-          "host": ["{{hostname}}"],
-          "path": ["url", "709b95a"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "deleteUrlById",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": {
-          "raw": "{{hostname}}/url/709b95a",
-          "host": ["{{hostname}}"],
-          "path": ["url", "709b95a"]
-        }
-      },
-      "response": []
-    }
-  ]
+	"info": {
+		"_postman_id": "4a22bebb-5bf1-4493-abe0-58e9e550e814",
+		"name": "Url Shortener",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9463548"
+	},
+	"item": [
+		{
+			"name": "Url",
+			"item": [
+				{
+					"name": "Get All Urls",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/url",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUrlById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/url/709b95a",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url",
+								"709b95a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUrlsByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/url/email/premium@email.com",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url",
+								"email",
+								"premium@email.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUrl w/o password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"originalUrl\": \"https://www.withoutpassword.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUrl w/ password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUrl w/ customUrl and password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customUrl\": \"abc\",\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUrl w/ INVALID URL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"originalUrl\": \"NotAURL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUrl w/ INVALID Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"originalUrl\": \"https://www.withpassword.com\",\r\n\t\"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginByShortUrl",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url/709b95a",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url",
+								"709b95a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUrlById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"originalUrl\": \"https://www.new.com\",\r\n\t\"password\": \"abcdef\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/url/2546136",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url",
+								"2546136"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUrlById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/url/709b95a",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"url",
+								"709b95a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/user",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/user/premium@email.com",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user",
+								"premium@email.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"txk.marcus@gmail.com\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/user",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"console.log(data.accessToken);\r",
+									"pm.globals.set(\"token\", data.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"c@gmail.com\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/user/login",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login free user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"console.log(data.accessToken);\r",
+									"pm.globals.set(\"token\", data.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"free@email.com\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/user/login",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login premium user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"console.log(data.accessToken);\r",
+									"pm.globals.set(\"token\", data.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"premium@email.com\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/user/login",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUserByEmail",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"1234567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/user/premium@email.com",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"user",
+								"premium@email.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUserByEmail",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/email/abc@gmail.com",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"email",
+								"abc@gmail.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
 }

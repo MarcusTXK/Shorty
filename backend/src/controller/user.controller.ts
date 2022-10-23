@@ -9,7 +9,9 @@ import {
   HttpStatus,
   HttpCode,
   Delete,
+  Req,
 } from '@nestjs/common';
+import { AuthRequest } from 'src/util/auth';
 import { CreateUserDto, createUserSchema } from '../dto/user/create-user.dto';
 import { LoginUserDto, loginUserSchema } from '../dto/user/login-user.dto';
 import { UpdateUserDto, updateUserSchema } from '../dto/user/update-user.dto';
@@ -30,14 +32,18 @@ export class UserController {
     }
   }
 
-  // TODO email should only be from bearer token
   @Get('user/:email')
-  async getUserByEmail(@Param('email') email: string) {
+  async getUserByEmail(@Param('email') email: string, @Req() req: AuthRequest) {
     try {
-      // TODO validate
+      if (req.user.email !== email) {
+        throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      }
       return await this.userService.getUserByEmail(email);
     } catch (e: any) {
       console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -67,7 +73,17 @@ export class UserController {
       if (error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
-      return await this.userService.login(value.email, value.password);
+      const accessToken = await this.userService.login(
+        value.email,
+        value.password,
+      );
+      if (!accessToken) {
+        throw new HttpException(
+          'User does not exist or Wrong login credentials entered',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+      return { accessToken };
     } catch (e: any) {
       console.error(e);
       if (e instanceof HttpException) {
@@ -78,12 +94,15 @@ export class UserController {
   }
 
   @Put('user/:email')
-  async updateUserById(
+  async updateUserByEmail(
     @Param('email') email: string,
+    @Req() req: AuthRequest,
     @Body() userDto: UpdateUserDto,
   ) {
     try {
-      // TODO validate email is same as token
+      if (req.user.email !== email) {
+        throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      }
       const { error, value } = updateUserSchema.validate(userDto);
       if (error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -99,12 +118,20 @@ export class UserController {
   }
 
   @Delete('user/:email')
-  async deleteUserById(@Param('email') email: string) {
+  async deleteUserByEmail(
+    @Param('email') email: string,
+    @Req() req: AuthRequest,
+  ) {
     try {
-      // TODO validate email is same as token
+      if (req.user.email !== email) {
+        throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      }
       return await this.userService.deleteUserByEmail(email);
     } catch (e: any) {
       console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
